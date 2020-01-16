@@ -1,0 +1,56 @@
+Lesson: 07
+==========
+
+desc   dba_tablespace
+
+select TABLESPACE_NAME 
+from   dba_tablespaces;
+
+desc   v$tablespace;
+select name 
+from   v$tablespace;
+
+show parameter tablespace -- No Show TableSpace Quantity
+
+desc   dba_data_files;
+
+select TABLESPACE_NAME 
+from   dba_data_files;
+
+desc   v$datafile;
+
+select name 
+from   v$datafile;
+
+create tablespace dba150_tbs_1
+datafile 'D:\APP\ADMINISTRATOR\ORADATA\ORCL\dba150_tbs_1.DBF'
+size 10M
+autoextend on;
+
+ALTER TABLESPACE dba150_tbs_1
+ADD DATAFILE 'D:\APP\ADMINISTRATOR\ORADATA\ORCL\dba150_tbs_2.DBF' 
+SIZE 2M
+AUTOEXTEND ON
+NEXT 1M
+MAXSIZE 25M
+/
+
+ALTER DATABASE DATAFILE  
+'D:\APP\ADMINISTRATOR\ORADATA\ORCL\dba150_tbs_1.DBF' 
+RESIZE 12M;
+
+SELECT tablespace_name, status, contents, logging,extent_management, 
+       allocation_type,segment_space_management
+FROM   dba_tablespaces;
+
+
+DROP TABLESPACE dba150_tbs_1; --This drop option can't drop physical datafile
+
+
+If you Drop a Tablespace & with Drop physical datafile Then
+
+
+DROP TABLESPACE dba150_tbs_1 INCLUDING CONTENTS AND DATAFILES;
+
+show parameter DB_RECOVERY_FILE_DEST
+

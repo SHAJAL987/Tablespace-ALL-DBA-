@@ -1,0 +1,128 @@
+		A L L     A B O U T    T A B L E S P A  C E
+-----------------------------------------------------------------------------------
+
+	Three types of Tablespaces:
+	---------------------------
+		1. Parmanent Tablespaces
+		2. Temporary Tablespaces
+		3. Undo Tablespaces
+
+	SQL> SHOW PARAMETER TABLESPACE;
+
+		NAME                                 TYPE        VALUE
+		------------------------------------ ----------- ------------
+		undo_tablespace                      string      UNDOTBS1
+
+
+	TableSpace information:
+	-----------------------
+		SQL> DESC DBA_TABLESPACES
+		SQL> SELECT TABLESPACE_NAME FROM DBA_TABLESPACES;
+
+			TABLESPACE_NAME
+			------------------------------
+			SYSTEM
+			SYSAUX
+			UNDOTBS1
+			TEMP
+			USERS
+			EXAMPLE
+
+			6 rows selected.
+
+		SQL> DESC V$TABLESPACE;
+		SQL> SELECT NAME FROM V$TABLESPACE;
+
+			NAME
+			------------------------------
+			SYSAUX
+			SYSTEM
+			UNDOTBS1
+			USERS
+			TEMP
+			EXAMPLE
+
+			6 rows selected.
+
+
+
+	Data File information:
+	----------------------
+		SQL> DESC DBA_DATA_FILES;
+		SQL> SELECT FILE_NAME FROM DBA_DATA_FILES;
+
+			FILE_NAME
+			---------------------------------------------
+			C:\APP\SHAJAL\ORADATA\DBA150\SYSTEM01.DBF
+			C:\APP\SHAJAL\ORADATA\DBA150\SYSAUX01.DBF
+			C:\APP\SHAJAL\ORADATA\DBA150\UNDOTBS01.DBF
+			C:\APP\SHAJAL\ORADATA\DBA150\USERS01.DBF
+			C:\APP\SHAJAL\ORADATA\DBA150\EXAMPLE01.DBF
+
+		SQL> DESC V$DATAFILE;
+		SQL> SELECT BLOCKS FROM V$DATAFILE;
+
+    			BLOCKS
+			----------
+    			102400
+    			103680
+     			82560
+       			640
+    			161360
+
+	Temp File information:
+	----------------------
+		SQL> DESC DBA_TEMP_FILES
+		SQL> DESC V$TEMPFILE
+
+===================== CREATING TABLESPACE =======================
+
+		LOCATION: C:\app\shajal\oradata\dba150
+		---------
+
+		SQL> CREATE TABLESPACE DBA150_TBS_1
+                     DATAFILE 'C:\app\shajal\oradata\dba150\DBA150_TBS_1.DBF'
+		     SIZE 10M
+		     AUTOEXTEND ON;
+
+		SQL> ALTER DATABASE DATAFILE  
+		     'C:\app\shajal\oradata\dba150\DBA150_TBS_1.DBF' 
+		     RESIZE 12M;
+
+
+
+                SQL>  ALTER TABLESPACE DBA150_TBS_1
+		      ADD DATAFILE 'C:\app\shajal\oradata\dba150\DBA150_TBS_1.DBF'
+		      SIZE 2M
+		      AUTOEXTEND ON
+		      NEXT 1M
+		      MAXSIZE 25M
+		      /
+
+		SQL> SET LINE 4000;
+		SQL> SET PAGESIZE 200;
+
+		SQL>  SELECT TABLESPACE_NAME, STATUS, CONTENTS, LOGGING, EXTENT_MANAGEMENT,
+                      ALLOCATION_TYPE, SEGMENT_SPACE_MANAGEMENT
+		      FROM DBA_TABLESPACES;
+
+		SQL> DROP TABLESPACE dba150_tbs_1; --This drop option can't drop physical datafile
+
+		## If you Drop a Tablespace & with Drop physical datafile Then.
+		
+		SQL> DROP TABLESPACE DBA150_TBS_1 INCLUDING CONTENTS AND DATAFILES;
+
+
+
+
+		
+
+
+
+
+
+
+
+
+
+
